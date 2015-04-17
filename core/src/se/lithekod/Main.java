@@ -27,12 +27,12 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-        Affine2 affine = new Affine2();
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-        playerSprite.setCenter(100, 100);
+        playerSprite.setPosition(player.getPos().x, player.getPos().y);
         playerSprite.rotate(.5f);
+//        playerSprite.getRotation()
         playerSprite.draw(batch);
 		batch.end();
 	}

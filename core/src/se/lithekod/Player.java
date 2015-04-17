@@ -7,8 +7,6 @@ import com.badlogic.gdx.math.Vector2;
  * Created by henning on 15-04-17.
  */
 public class Player {
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     private Vector2 pos = new Vector2(50, 50);
     private PlayerState state = PlayerState.IDEL;
