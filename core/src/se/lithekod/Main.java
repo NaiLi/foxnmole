@@ -89,7 +89,6 @@ public class Main extends ApplicationAdapter {
 			int dir = (count%3 == 0) ? 1 : -1;
 			Rabbit r = new Rabbit(dir);
 			rabbits.add(r);
-			System.out.println(rabbits.size());
 		}
 
 		// Set map is cleared
