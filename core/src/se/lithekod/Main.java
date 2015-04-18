@@ -4,7 +4,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,6 +27,8 @@ public class Main extends ApplicationAdapter {
 	Texture digged;
 	public static int DESKTOP_HEIGHT;
 	public static int DESKTOP_WIDTH;
+	public static Pixmap pixmap;
+	public static Pixmap diggedMap;
 	
 	@Override
 	public void create () {
@@ -44,15 +49,30 @@ public class Main extends ApplicationAdapter {
 		rabbitSprite = new Sprite(rabbitImg);
 		InputHandler inputHandler = new InputHandler();
 		Gdx.input.setInputProcessor(inputHandler);
+
+
+		pixmap = new Pixmap(DESKTOP_WIDTH, DESKTOP_HEIGHT - Map.SKY_HEIGHT, Pixmap.Format.RGBA8888);
+		pixmap.setColor(.1f, .7f, .99f, 1);
+		pixmap.fill();
+		Pixmap soilMap = new Pixmap(Gdx.files.internal("Soil.png"));
+		diggedMap = new Pixmap(Gdx.files.internal("Soil_digged.png"));
+		for (int i = 0; i < DESKTOP_WIDTH; i += soilMap.getWidth()) {
+			for (int j = 0; j < DESKTOP_HEIGHT - Map.SKY_HEIGHT; j += soilMap.getHeight()) {
+				pixmap.drawPixmap(soilMap, i,j);
+			}
+		}
+		pixmap.setColor(0, 0, 0, 0);
 	}
 
 	@Override
 	public void render () {
         player.update();
-
+		
 		for (Rabbit r : rabbits){
 			r.update();
 		}
+
+		System.out.println(pixmap.getPixel(150, 50));
 
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -78,19 +98,8 @@ public class Main extends ApplicationAdapter {
 		if (player.getRotation() > 90 && player.getRotation() < 270)
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
-
-		batch.draw(soil, 0, 0, 1200, 550);
-
-		// Draw digged where map is cleared
-		for (int i = 0; i < DESKTOP_WIDTH; i++) {
-			for (int j = 0; j < DESKTOP_HEIGHT - map.getSkyHeight(); j++) {
-				if(map.isCleared(i,j)) {
-					batch.draw(digged,i, j , 1, 1);
-				}
-			}
-		}
-        //playerSprite.rotate(.5f);
-//        playerSprite.getRotation()
+		Texture tex = new Texture(pixmap);
+		batch.draw(tex, 0, 0);
         playerSprite.draw(batch);
 		rabbitSprite.draw(batch);
 		batch.end();

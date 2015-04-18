@@ -1,6 +1,7 @@
 package se.lithekod;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 
 public class Map {
     public static final int SKY_HEIGHT = 50;
@@ -25,6 +26,8 @@ public class Map {
         for(int i = startX; i < endX; i++) {
             for (int j = startY ; j < endY; j++) {
                 dirtMap[i][j] = Ground.CLEARED;
+                Main.pixmap.setColor(new Color(Main.diggedMap.getPixel(i % 64, j % 64)));
+                Main.pixmap.drawPixel(i, Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT - j);
             }
         }
     }
