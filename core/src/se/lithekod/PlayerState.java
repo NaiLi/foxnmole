@@ -4,5 +4,5 @@ package se.lithekod;
  * Created by acrux on 2015-04-17.
  */
 public enum PlayerState {
-    IDEL, DIGGING, MOVING
+    IDLE, DIGGING, MOVING
 }
