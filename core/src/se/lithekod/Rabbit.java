@@ -38,10 +38,10 @@ public class Rabbit {
             pos.x = pos.x + direction*speed * (float) time;
         } else if (Main.map.isWalkable(pos.x - direction*acceptance, pos.y)) {
             pos.x = pos.x - direction*speed * (float) time;
-        } else if (Main.map.isWalkable(pos.x + direction*acceptance, pos.y - Math.abs(direction)*2)) {
+        } else if (Main.map.isWalkable(pos.x + direction*acceptance, pos.y - Math.abs(direction)*acceptance)) {
             pos.x = pos.x + direction*speed * (float) time;
             pos.y = pos.y - Math.abs(direction*speed) * (float) time;
-        } else if (Main.map.isWalkable(pos.x - direction*acceptance, pos.y - Math.abs(direction)*2)) {
+        } else if (Main.map.isWalkable(pos.x - direction*acceptance, pos.y - Math.abs(direction)*acceptance)) {
             pos.x = pos.x - direction*speed * (float) time;
             pos.y = pos.y - Math.abs(direction*speed) * (float) time;
         } else if (Main.map.isWalkable(pos.x + direction*acceptance, pos.y)) {

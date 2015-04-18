@@ -56,20 +56,6 @@ public class Map {
         }
     }
 
-    public void removeRabbit(float x, float y) {
-
-        int digRadius = 1;
-        int startX = ((x - digRadius) < 0) ? 0 : (int) (x - digRadius);
-        int endX = (x + digRadius*2 > Main.DESKTOP_WIDTH) ? Main.DESKTOP_WIDTH : (int) (x + digRadius*2);
-        int startY = (y - digRadius < 0) ? 0 : (int) y - digRadius;
-        int endY = (y + digRadius*2 > Main.DESKTOP_HEIGHT-SKY_HEIGHT) ? Main.DESKTOP_HEIGHT-SKY_HEIGHT : (int) y + digRadius*2;
-        for(int i = startX; i < endX; i++) {
-            for (int j = startY ; j < endY; j++) {
-                dirtMap[i][j] = Ground.CLEARED;
-            }
-        }
-    }
-
     public static boolean isCleared(float x, float y) {
 
         if(!isOutOfBounds((double) x, (double) y)) {
