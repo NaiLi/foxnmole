@@ -15,9 +15,14 @@ public class Map {
         }
     }
 
-    public void setCleared(float x, float y) { // TODO check bounds
-        for(int i = (int) x-15; i < x+30; i++) {
-            for (int j = (int) y-15; j < y+30; j++) {
+    public void setCleared(float x, float y) {
+
+        int startX = (x-15 < 0) ? 0 : (int) x-15;
+        int endX = (x+30 > Main.DESKTOP_WIDTH) ? Main.DESKTOP_WIDTH : (int) x+30;
+        int startY = (y-15 < 0) ? 0 : (int) y-15;
+        int endY = (y+30 > Main.DESKTOP_HEIGHT-SKY_HEIGHT) ? Main.DESKTOP_HEIGHT-SKY_HEIGHT : (int) y+30;
+        for(int i = startX; i < endX; i++) {
+            for (int j = startY ; j < endY; j++) {
                 dirtMap[i][j] = Ground.CLEARED;
             }
         }

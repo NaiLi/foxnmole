@@ -67,8 +67,8 @@ public class Main extends ApplicationAdapter {
 		batch.draw(soil, 0, 0, 1200, 550);
 
 		// Draw digged where map is cleared
-		for (int i = 0; i < DESKTOP_WIDTH-50; i++) {
-			for (int j = 0; j < DESKTOP_HEIGHT -50; j++) {
+		for (int i = 0; i < DESKTOP_WIDTH; i++) {
+			for (int j = 0; j < DESKTOP_HEIGHT - map.getSkyHeight(); j++) {
 				if(map.isCleared(i,j)) {
 					batch.draw(digged,i, j , 1, 1);
 				}
