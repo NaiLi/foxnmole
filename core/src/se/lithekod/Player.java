@@ -62,6 +62,11 @@ public class Player {
         this.downPressed = downPressed;
     }
 
+    public void setPos(float x, float y) {
+        pos.x = x;
+        pos.y = y;
+    }
+
     public Vector2 getPos() {
         return pos;
     }

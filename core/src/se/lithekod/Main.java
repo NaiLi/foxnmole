@@ -56,7 +56,6 @@ public class Main extends ApplicationAdapter {
 			}
 
 		}
-		}
 
 	}
 
@@ -67,16 +66,27 @@ public class Main extends ApplicationAdapter {
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-        playerSprite.setPosition(player.getPos().x - playerSprite.getWidth() / 2, player.getPos().y - playerSprite.getHeight() / 2);
-        playerSprite.setRotation(player.getRotation());
+
+		// Check so badger dont go outside of dirt
+		float badgerPositionX = player.getPos().x;
+		badgerPositionX = (badgerPositionX < playerSprite.getWidth() / 2) ? playerSprite.getWidth() / 2 : badgerPositionX;
+		badgerPositionX = (badgerPositionX > DESKTOP_WIDTH - playerSprite.getWidth() / 2) ? (float) DESKTOP_WIDTH - playerSprite.getWidth() / 2: badgerPositionX;
+		float badgerPositionY = player.getPos().y;
+		badgerPositionY = (badgerPositionY < playerSprite.getHeight() / 2) ? playerSprite.getHeight() / 2 : badgerPositionY;
+		badgerPositionY = (badgerPositionY > DESKTOP_HEIGHT - playerSprite.getHeight() / 2 - map.getSkyHeight()) ? (float) DESKTOP_HEIGHT - playerSprite.getHeight() / 2 - map.getSkyHeight(): badgerPositionY;
+		player.setPos(badgerPositionX, badgerPositionY);
+
+		playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
+		playerSprite.setRotation(player.getRotation());
+
+		// Set map is cleared
+		map.setCleared(badgerPositionX, badgerPositionY);
+
 		if (player.getRotation() > 90 && player.getRotation() < 270)
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
 		Texture tex = new Texture(pixmap);
 		batch.draw(tex, 0, 0);
-//		batch.draw(soil, 0, 0, 64, 64);
-        //playerSprite.rotate(.5f);
-//        playerSprite.getRotation()
         playerSprite.draw(batch);
 		batch.end();
 	}
