@@ -66,9 +66,7 @@ public class Main extends ApplicationAdapter {
 	public void render () {
         player.update();
 		
-		for (Rabbit r : rabbits){
-			r.update();
-		}
+		updateRabbits();
 
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -91,6 +89,7 @@ public class Main extends ApplicationAdapter {
 			int dir = (count%3 == 0) ? 1 : -1;
 			Rabbit r = new Rabbit(dir);
 			rabbits.add(r);
+			System.out.println(rabbits.size());
 		}
 
 		// Set map is cleared
@@ -131,6 +130,17 @@ public class Main extends ApplicationAdapter {
 		for (int i = 0; i < 10 - map.wormList.size(); i++) {
 			map.wormList.add(new Worm(map.rand));
 		}
+	}
+
+	public void updateRabbits() {
+
+		ArrayList<Rabbit> tmp = new ArrayList<Rabbit>();
+		for (Rabbit r : rabbits){
+			if(r.update()) {
+				tmp.add(r);
+			}
+		}
+		rabbits = tmp;
 	}
 
 	public class InputHandler implements InputProcessor {

@@ -19,7 +19,7 @@ public class Rabbit {
         pos.y = Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT - 10;
     }
 
-    public void update() {
+    public boolean update() {
 
         if (Map.isCleared(pos.x, pos.y - 1)) {
             pos.y = pos.y - 1;
@@ -31,8 +31,9 @@ public class Rabbit {
         }
 
         if(Map.isOutOfBounds(pos.x, pos.y)) {
-
+            return false;
         }
+        return true;
     }
 
     public Vector2 getPos() {
