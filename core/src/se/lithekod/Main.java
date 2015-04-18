@@ -11,8 +11,12 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -29,6 +33,7 @@ public class Main extends ApplicationAdapter {
 	public static int DESKTOP_WIDTH;
 	public static Pixmap pixmap;
 	public static Pixmap diggedMap;
+	ShapeRenderer shapeRenderer;
 	
 	@Override
 	public void create () {
@@ -47,6 +52,7 @@ public class Main extends ApplicationAdapter {
         playerSprite = new Sprite(playerImg);
 		this.rabbits.add(new Rabbit());
 		rabbitSprite = new Sprite(rabbitImg);
+		this.shapeRenderer = new ShapeRenderer();
 		InputHandler inputHandler = new InputHandler();
 		Gdx.input.setInputProcessor(inputHandler);
 
@@ -91,6 +97,7 @@ public class Main extends ApplicationAdapter {
 
 		rabbitSprite.setPosition(20, 20);
 
+
 		// Set map is cleared
 		map.setCleared(badgerPositionX, badgerPositionY);
 
@@ -102,6 +109,28 @@ public class Main extends ApplicationAdapter {
         playerSprite.draw(batch);
 		rabbitSprite.draw(batch);
 		batch.end();
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+		updateWorms();
+		shapeRenderer.end();
+	}
+
+	public void updateWorms() {
+		shapeRenderer.setColor(Color.GREEN);
+		LinkedList<Worm> tmp = new LinkedList<Worm>(map.wormList);
+		for (ListIterator<Worm> i = tmp.listIterator() ; i.hasNext();){
+			Worm w = i.next();
+			System.out.println(w.pos);
+			if (w.update()) map.wormList.remove(w);
+			else {
+				// 6 is circle radius
+				shapeRenderer.circle(w.pos.x - 3, w.pos.y - 3, 6);
+			}
+		}
+
+		for (int i = 0; i < 10 - map.wormList.size(); i++) {
+			map.wormList.add(new Worm(map.rand));
+		}
+
 	}
 
 	public class InputHandler implements InputProcessor {
