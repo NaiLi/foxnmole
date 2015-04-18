@@ -92,7 +92,7 @@ public class Main extends ApplicationAdapter {
 
 		playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
 		playerSprite.setRotation(player.getRotation());
-		playerSprite.setRotation((float) Math.toDegrees(player.getRotation()));
+		playerSprite.setRotation(player.getRotation());
 
 		if(count%100 == 0) {
 			int dir = (count%3 == 0) ? 1 : -1;
@@ -103,7 +103,7 @@ public class Main extends ApplicationAdapter {
 		// Set map is cleared
 		map.setCleared(badgerPositionX, badgerPositionY);
 
-		if (player.getRotation() > (float) Math.PI/2 && player.getRotation() < (float) Math.PI/2)
+		if (player.getRotation() > 90 && player.getRotation() < 270)
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
 		Texture ground = new Texture(pixmap);

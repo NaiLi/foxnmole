@@ -94,6 +94,6 @@ public class Player {
     }
 
     public float getRotation() {
-        return angle;
+        return (float) Math.toDegrees(angle);
     }
 }
