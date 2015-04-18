@@ -15,6 +15,7 @@ public class Worm {
     float speed;
     float crazyness;
     public static final float FALLING_SPEED = 78;
+    public float stateTime;
 
     public Worm(Random rand) {
         this.rand = rand;
@@ -23,10 +24,12 @@ public class Worm {
         this.angle = rand.nextFloat() % (2 * (float) Math.PI);
         this.speed = Math.abs(rand.nextFloat()) % 12 + 12;
         this.crazyness = (float) Math.sqrt(rand.nextFloat() % 2);
+        this.stateTime = 0f;
     }
 
     public boolean update() {
         double time = Gdx.graphics.getDeltaTime();
+        stateTime += time;
         Vector2 tmp;
         if (Map.isCleared(pos.x, pos.y)) {
             tmp = new Vector2(this.pos.x, this.pos.y - FALLING_SPEED * (float) time);
