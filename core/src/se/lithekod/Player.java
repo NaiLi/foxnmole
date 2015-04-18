@@ -50,9 +50,9 @@ public class Player {
             int x = (int) (pos.x + ((Math.cos(angle) * pos.x)/Math.abs(Math.cos(angle) * pos.x)) * steps);
             int y = (int) (pos.y + ((Math.cos(angle) * pos.y)/Math.abs(Math.cos(angle) * pos.y)) * steps);
 
-            if ( !Main.map.isOutOfBounds (x, y)) {
+            if ( !Map.isOutOfBounds (x, y)) {
 
-                if (Main.map.isCleared((int) (pos.x + ((Math.cos(angle) * pos.x)/Math.abs(Math.cos(angle) * pos.x)) * steps), (int) (pos.y + ((Math.cos(angle) * pos.y)/Math.abs(Math.cos(angle) * pos.y)) * steps))) {
+                if (Map.isCleared((int) (pos.x + ((Math.cos(angle) * pos.x)/Math.abs(Math.cos(angle) * pos.x)) * steps), (int) (pos.y + ((Math.cos(angle) * pos.y)/Math.abs(Math.cos(angle) * pos.y)) * steps))) {
                     state = PlayerState.MOVING;
                     crawlingSpeed = FAST;
 
