@@ -13,21 +13,18 @@ public class Player {
     private PlayerState state = PlayerState.IDLE;
     private float angle = 0;
     public static final float rotationSpeed = 4;
-    public static final float crawlingSpeed = 1;
+    public static final float crawlingSpeed = 5;
 
     private boolean rightPressed = false;
     private boolean leftPressed = false;
     private boolean upPressed = false;
+    private boolean downPressed = false;
 
     public Player() {
 
     }
 
     public void update() {
-        rightPressed = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
-        leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
-        upPressed = Gdx.input.isKeyPressed(Input.Keys.UP);
-
         float deltaTime = Gdx.graphics.getDeltaTime();
         if  (rightPressed && !leftPressed){
             angle -= (deltaTime * rotationSpeed) % (2 * Math.PI);
@@ -56,6 +53,14 @@ public class Player {
 
     public void setLeftPressed(boolean leftPressed) {
         this.leftPressed = leftPressed;
+    }
+
+    public void setUpPressed(boolean upPressed) {
+        this.upPressed = upPressed;
+    }
+
+    public void setDownPressed(boolean downPressed) {
+        this.downPressed = downPressed;
     }
 
     public Vector2 getPos() {
