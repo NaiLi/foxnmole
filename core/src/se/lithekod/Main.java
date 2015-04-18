@@ -27,8 +27,6 @@ public class Main extends ApplicationAdapter {
 	Texture rabbitImg;
 	ArrayList<Rabbit> rabbits;
 	Sprite rabbitSprite;
-	Texture soil;
-	Texture digged;
 	public static int DESKTOP_HEIGHT;
 	public static int DESKTOP_WIDTH;
 	public static Pixmap pixmap;
@@ -43,10 +41,6 @@ public class Main extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		playerImg = new Texture("mole_original.png");
 		rabbitImg = new Texture("rabbit_sheet_single.png");
-		soil = new Texture("Soil.png");
-		digged = new Texture("Soil_digged.png");
-		soil.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-		digged.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         this.map = new Map();
         this.player = new Player();
         playerSprite = new Sprite(playerImg);

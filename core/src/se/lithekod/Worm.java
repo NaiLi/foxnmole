@@ -15,7 +15,7 @@ public class Worm {
     Random rand;
     float speed;
     float crazyness;
-    public static final float FALLING_SPEED = 2;
+    public static final float FALLING_SPEED = 78;
 
     public Worm(Random rand) {
         this.rand = rand;
@@ -39,7 +39,7 @@ public class Worm {
                 Vector2 tmp;
                 if (Map.isCleared(pos.x, pos.y)) {
                     this.angle = (float) Math.PI/2;
-                    tmp = new Vector2(this.pos.x - FALLING_SPEED * (float) time, this.pos.y);
+                    tmp = new Vector2(this.pos.x, this.pos.y - FALLING_SPEED * (float) time);
                 }
                 else {
                     tmp = new Vector2(this.pos.x + (float) (Math.cos(angle) * speed * time),
