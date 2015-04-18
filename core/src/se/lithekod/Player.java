@@ -1,6 +1,7 @@
 package se.lithekod;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -9,21 +10,27 @@ import com.badlogic.gdx.math.Vector2;
 public class Player {
 
     private Vector2 pos = new Vector2(50, 50);
-    private PlayerState state = PlayerState.IDEL;
+    private PlayerState state = PlayerState.IDLE;
     private float angle = 0;
-    public static final float rotationSpeed = 1;
+    public static final float rotationSpeed = 4;
+    public static final float crawlingSpeed = 1;
 
     private boolean rightPressed = false;
     private boolean leftPressed = false;
+    private boolean upPressed = false;
 
     public Player() {
 
     }
 
-    public void update(){
+    public void update() {
+        rightPressed = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        upPressed = Gdx.input.isKeyPressed(Input.Keys.UP);
+
         float deltaTime = Gdx.graphics.getDeltaTime();
         if  (rightPressed && !leftPressed){
-            angle += (deltaTime * rotationSpeed) % (2 * Math.PI);
+            angle -= (deltaTime * rotationSpeed) % (2 * Math.PI);
         }
         else if (!rightPressed && leftPressed){
             angle += (deltaTime * rotationSpeed) % (2 * Math.PI);
@@ -34,6 +41,11 @@ public class Player {
         }
         else if (angle < 0){
             angle =  2 * (float) Math.PI;
+        }
+
+        if (upPressed) {
+            pos.x += Math.cos(angle) * crawlingSpeed;
+            pos.y += Math.sin(angle) * crawlingSpeed;
         }
     }
 
@@ -48,6 +60,9 @@ public class Player {
 
     public Vector2 getPos() {
         return pos;
+    }
 
+    public float getRotation() {
+        return (float) Math.toDegrees(angle);
     }
 }

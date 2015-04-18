@@ -27,11 +27,14 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+        player.update();
+
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
         playerSprite.setPosition(player.getPos().x, player.getPos().y);
-        playerSprite.rotate(.5f);
+        playerSprite.setRotation(player.getRotation());
+        //playerSprite.rotate(.5f);
 //        playerSprite.getRotation()
         playerSprite.draw(batch);
 		batch.end();
