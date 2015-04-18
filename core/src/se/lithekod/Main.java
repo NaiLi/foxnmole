@@ -4,7 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -19,6 +21,7 @@ public class Main extends ApplicationAdapter {
 	Texture digged;
 	public static int DESKTOP_HEIGHT;
 	public static int DESKTOP_WIDTH;
+	Pixmap pixmap;
 	
 	@Override
 	public void create () {
@@ -36,6 +39,25 @@ public class Main extends ApplicationAdapter {
 		InputHandler inputHandler = new InputHandler();
 		Gdx.input.setInputProcessor(inputHandler);
 
+
+		pixmap = new Pixmap(DESKTOP_WIDTH, DESKTOP_HEIGHT - Map.SKY_HEIGHT, Pixmap.Format.RGBA8888);
+		pixmap.setColor(.1f, .7f, .99f, 1);
+		pixmap.fill();
+		Pixmap soilMap = new Pixmap(Gdx.files.internal("Soil.png"));
+		for (int i = 0; i < DESKTOP_WIDTH; i += soilMap.getWidth()) {
+			for (int j = 0; j < DESKTOP_HEIGHT - Map.SKY_HEIGHT; j += soilMap.getHeight()) {
+				pixmap.drawPixmap(soilMap, i,j);
+				}
+			}
+		for (int i = 0; i < DESKTOP_WIDTH; i++) {
+			for (int j = 0; j < 50; j++) {
+//				pixmap.drawPixel(i, j, );
+
+			}
+
+		}
+		}
+
 	}
 
 	@Override
@@ -50,8 +72,9 @@ public class Main extends ApplicationAdapter {
 		if (player.getRotation() > 90 && player.getRotation() < 270)
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
-
-		batch.draw(soil, 0, 0, 1200, 550);
+		Texture tex = new Texture(pixmap);
+		batch.draw(tex, 0, 0);
+//		batch.draw(soil, 0, 0, 64, 64);
         //playerSprite.rotate(.5f);
 //        playerSprite.getRotation()
         playerSprite.draw(batch);

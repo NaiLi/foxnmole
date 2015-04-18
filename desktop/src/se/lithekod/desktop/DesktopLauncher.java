@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Fox'n'Mole";
 		config.height = 600;
-		config.width = 1200;
+		config.width = 1024;
 		new LwjglApplication(new Main(), config);
 	}
 }
