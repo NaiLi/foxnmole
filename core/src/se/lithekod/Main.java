@@ -25,7 +25,7 @@ public class Main extends ApplicationAdapter {
     Player player;
     public static Sprite playerSprite;
 	Texture rabbitImg;
-	ArrayList<Rabbit> rabbits;
+	public static ArrayList<Rabbit> rabbits;
 	Texture soil;
 	Texture digged;
 	public static int DESKTOP_HEIGHT;
