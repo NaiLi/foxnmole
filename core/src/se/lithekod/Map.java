@@ -36,8 +36,8 @@ public class Map {
         for(int i = startX; i < endX; i++) {
             for (int j = startY ; j < endY; j++) {
                 dirtMap[i][j] = Ground.CLEARED;
-                Main.pixmap.setColor(new Color(Main.diggedMap.getPixel(i/4 % 64, j/2 % 64)));
-                Main.pixmap.drawPixel(i, Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT - j);
+                GameScreen.pixmap.setColor(new Color(GameScreen.diggedMap.getPixel(i/4 % 64, j/2 % 64)));
+                GameScreen.pixmap.drawPixel(i, Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT - j);
             }
         }
     }

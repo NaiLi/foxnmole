@@ -45,7 +45,7 @@ public class Player {
 
         if (upPressed) {
 
-            int steps = (int) Main.playerSprite.getWidth()/2;
+            int steps = (int) GameScreen.playerSprite.getWidth()/2;
 
             int x = (int) (pos.x + ((Math.cos(angle) * pos.x)/Math.abs(Math.cos(angle) * pos.x)) * steps);
             int y = (int) (pos.y + ((Math.cos(angle) * pos.y)/Math.abs(Math.cos(angle) * pos.y)) * steps);
