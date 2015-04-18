@@ -8,11 +8,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Vector2;
 
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -31,6 +35,8 @@ public class Main extends ApplicationAdapter {
 	public static Pixmap diggedMap;
 	ShapeRenderer shapeRenderer;
 	private int count = 0;
+	Animation worm;
+	public static final float WORM_SPEED = 0.07f;
 
 	@Override
 	public void create () {
@@ -47,6 +53,7 @@ public class Main extends ApplicationAdapter {
 		this.shapeRenderer = new ShapeRenderer();
 		InputHandler inputHandler = new InputHandler();
 		Gdx.input.setInputProcessor(inputHandler);
+		makeAnimation();
 
 
 		pixmap = new Pixmap(DESKTOP_WIDTH, DESKTOP_HEIGHT - Map.SKY_HEIGHT, Pixmap.Format.RGBA8888);
@@ -54,12 +61,17 @@ public class Main extends ApplicationAdapter {
 		pixmap.fill();
 		Pixmap soilMap = new Pixmap(Gdx.files.internal("Soil.png"));
 		diggedMap = new Pixmap(Gdx.files.internal("Soil_digged.png"));
-		for (int i = 0; i < DESKTOP_WIDTH; i += soilMap.getWidth()) {
-			for (int j = 0; j < DESKTOP_HEIGHT - Map.SKY_HEIGHT; j += soilMap.getHeight()) {
-				pixmap.drawPixmap(soilMap, i,j);
+		for (int i = 0; i < DESKTOP_WIDTH; i++ ) {
+			for (int j = 0; j < DESKTOP_HEIGHT - Map.SKY_HEIGHT; j++) {
+//				pixmap.drawPixmap(soilMap, i,j);
+				pixmap.drawPixel(i, j, soilMap.getPixel(i/4 % soilMap.getWidth(), j/4 %soilMap.getHeight()));
 			}
 		}
-		pixmap.setColor(0, 0, 0, 0);
+		Pixmap grassMap = new Pixmap(Gdx.files.internal("Grass.png"));
+		for (int x = 0; x < DESKTOP_WIDTH; x += grassMap.getWidth()) {
+			pixmap.drawPixmap(grassMap, x, 0);
+
+		}
 	}
 
 	@Override
@@ -70,7 +82,6 @@ public class Main extends ApplicationAdapter {
 
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
 
 		// Check so badger dont go outside of dirt
 		float badgerPositionX = player.getPos().x;
@@ -99,15 +110,14 @@ public class Main extends ApplicationAdapter {
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
 		Texture ground = new Texture(pixmap);
+		batch.begin();
 		batch.draw(ground, 0, 0);
         playerSprite.draw(batch);
 		for(int i = 0; i < rabbits.size(); i++) {
 			batch.draw(rabbitImg, rabbits.get(i).getPos().x, rabbits.get(i).getPos().y);
 		}
-		batch.end();
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		updateWorms();
-		shapeRenderer.end();
+		batch.end();
 
 		count++;
 	}
@@ -121,9 +131,25 @@ public class Main extends ApplicationAdapter {
 			else {
 				if (w.pos.dst(player.getPos()) < 20)
 					map.wormList.remove(w);
-				else
-                    shapeRenderer.circle(w.pos.x - 3, w.pos.y - 3, 6);
+				else {
+					TextureRegion wormFrame = worm.getKeyFrame(w.stateTime, true);
+					Affine2 trans = new Affine2();
+//					trans.rotate(w.angle);
+//					trans.shear(0.25f, 0.25f);
+//					trans.rotateRad(w.angle);
+//					batch.draw(wormFrame, w.pos.x - wormFrame.getRegionWidth()/2,
+//							w.pos.y - wormFrame.getRegionWidth()/2,
+//							trans);
 
+					batch.draw(wormFrame, w.pos.x - wormFrame.getRegionWidth()/2,
+							w.pos.y - wormFrame.getRegionWidth()/2,
+							wormFrame.getRegionWidth()/2,
+							wormFrame.getRegionHeight()/2,
+							wormFrame.getRegionWidth(),
+							wormFrame.getRegionHeight(),
+							.25f, .25f,
+							(float) Math.toDegrees(w.angle));
+				}
 			}
 		}
 
@@ -141,6 +167,12 @@ public class Main extends ApplicationAdapter {
 			}
 		}
 		rabbits = tmp;
+	}
+
+	private void makeAnimation() {
+		Texture wormSheet = new Texture(Gdx.files.internal("Worm_Sprite.png"));
+		TextureRegion[][] tmp = TextureRegion.split(wormSheet, wormSheet.getWidth()/4, wormSheet.getHeight());
+		this.worm = new Animation(WORM_SPEED, tmp[0]);
 	}
 
 	public class InputHandler implements InputProcessor {
