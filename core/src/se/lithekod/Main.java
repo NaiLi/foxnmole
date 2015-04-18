@@ -42,7 +42,7 @@ public class Main extends ApplicationAdapter {
 		DESKTOP_WIDTH = Gdx.graphics.getWidth();
 		batch = new SpriteBatch();
 		playerImg = new Texture("mole_original.png");
-		rabbitImg = new Texture("rabbit_sheet.png");
+		rabbitImg = new Texture("rabbit_sheet_single.png");
 		soil = new Texture("Soil.png");
 		digged = new Texture("Soil_digged.png");
 		soil.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
@@ -95,7 +95,7 @@ public class Main extends ApplicationAdapter {
 		playerSprite.setRotation(player.getRotation());
 		playerSprite.setRotation((float) Math.toDegrees(player.getRotation()));
 
-		rabbitSprite.setPosition(20, 20);
+		rabbitSprite.setPosition(rabbits.get(0).getPos().x - rabbitSprite.getWidth()/2, rabbits.get(0).getPos().y - rabbitSprite.getHeight()/2);
 
 
 		// Set map is cleared

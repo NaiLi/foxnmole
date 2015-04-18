@@ -42,9 +42,12 @@ public class Map {
         }
     }
 
-    public static boolean  isCleared(float x, float y) {
+    public static boolean isCleared(float x, float y) {
 
-        return  dirtMap[(int) x][(int) y] == Ground.CLEARED;
+        if(!isOutOfBounds((double) x, (double) y)) {
+            return dirtMap[(int) x][(int) y] == Ground.CLEARED;
+        }
+        return false;
     }
 
     public int getSkyHeight() {
