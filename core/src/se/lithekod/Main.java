@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -119,8 +120,11 @@ public class Main extends ApplicationAdapter {
 			Worm w = i.next();
 			if (w.update()) map.wormList.remove(w);
 			else {
-				// 6 is circle radius
-				shapeRenderer.circle(w.pos.x - 3, w.pos.y - 3, 6);
+				if (w.pos.dst(player.getPos()) < 20)
+					map.wormList.remove(w);
+				else
+                    shapeRenderer.circle(w.pos.x - 3, w.pos.y - 3, 6);
+
 			}
 		}
 
