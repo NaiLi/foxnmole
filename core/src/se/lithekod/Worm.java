@@ -30,9 +30,10 @@ public class Worm {
                 }
                 break;
             case DIGGING:
-                if (Map.dirtMap[(int) pos.x][(int) pos.y] == Ground.CLEARED) {
+                if (Map.isCleared(pos.x, pos.y)) {
                     this.state = WormState.FALLING;
                 }
+                Vector2 tmp = new Vector2((float) Math.cos(angle) * speed, (float) Math.sin(angle) * speed);
 
                 this.pos.add((float) Math.cos(angle) * speed, (float) Math.sin(angle) * speed);
                 if (rand.nextInt() % 20 == 0) {

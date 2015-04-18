@@ -42,7 +42,7 @@ public class Map {
         }
     }
 
-    public boolean isCleared(float x, float y) {
+    public static boolean  isCleared(float x, float y) {
 
         return  dirtMap[(int) x][(int) y] == Ground.CLEARED;
     }

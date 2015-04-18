@@ -87,13 +87,14 @@ public class Main extends ApplicationAdapter {
 
 		playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
 		playerSprite.setRotation(player.getRotation());
+		playerSprite.setRotation((float) Math.toDegrees(player.getRotation()));
 
 		rabbitSprite.setPosition(20, 20);
 
 		// Set map is cleared
 		map.setCleared(badgerPositionX, badgerPositionY);
 
-		if (player.getRotation() > 90 && player.getRotation() < 270)
+		if (player.getRotation() > (float) Math.PI/2 && player.getRotation() < (float) Math.PI/2)
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
 		Texture ground = new Texture(pixmap);
