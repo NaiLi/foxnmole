@@ -50,4 +50,11 @@ public class Map {
     public int getSkyHeight() {
         return SKY_HEIGHT;
     }
+
+    public boolean isOutOfBounds(double x, double y) {
+        if( x < 0 || x > Main.DESKTOP_WIDTH-1 || y < 0 || y > Main.DESKTOP_HEIGHT-SKY_HEIGHT-1 ) {
+            return true;
+        }
+        return false;
+    }
 }

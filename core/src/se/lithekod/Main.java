@@ -17,11 +17,11 @@ import java.util.ArrayList;
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture playerImg;
-	Texture rabbitImg;
-    Map map;
+    public static Map map;
     Player player;
+    public static Sprite playerSprite;
+	Texture rabbitImg;
 	ArrayList<Rabbit> rabbits;
-    Sprite playerSprite;
 	Sprite rabbitSprite;
 	Texture soil;
 	Texture digged;
