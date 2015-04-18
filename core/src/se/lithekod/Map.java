@@ -3,16 +3,26 @@ package se.lithekod;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
+import java.util.LinkedList;
+import java.util.Random;
+
 public class Map {
     public static final int SKY_HEIGHT = 50;
-    public Ground[][] dirtMap;
+    public static Ground[][] dirtMap;
+    LinkedList<Worm> wormList;
+    Random rand;
 
     public Map() {
         dirtMap = new Ground[Main.DESKTOP_WIDTH][Main.DESKTOP_HEIGHT - SKY_HEIGHT];
+        this.rand = new Random();
         for (int i = 0; i < Main.DESKTOP_WIDTH; i++) {
             for (int j = 0; j < Main.DESKTOP_HEIGHT - SKY_HEIGHT; j++) {
                 dirtMap[i][j] = Ground.DIRT;
             }
+        }
+        wormList = new LinkedList<Worm>();
+        for (int i = 0; i < 10; i++) {
+            wormList.add(new Worm(rand));
         }
     }
 

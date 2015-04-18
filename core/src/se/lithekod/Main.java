@@ -59,8 +59,6 @@ public class Main extends ApplicationAdapter {
 	public void render () {
         player.update();
 
-		System.out.println(pixmap.getPixel(150, 50));
-
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
@@ -83,8 +81,8 @@ public class Main extends ApplicationAdapter {
 		if (player.getRotation() > 90 && player.getRotation() < 270)
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
-		Texture tex = new Texture(pixmap);
-		batch.draw(tex, 0, 0);
+		Texture ground = new Texture(pixmap);
+		batch.draw(ground, 0, 0);
         playerSprite.draw(batch);
 		batch.end();
 	}
