@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -12,9 +11,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -26,8 +25,6 @@ public class Main extends ApplicationAdapter {
     public static Sprite playerSprite;
 	Texture rabbitImg;
 	ArrayList<Rabbit> rabbits;
-	Texture soil;
-	Texture digged;
 	public static int DESKTOP_HEIGHT;
 	public static int DESKTOP_WIDTH;
 	public static Pixmap pixmap;
@@ -43,13 +40,9 @@ public class Main extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		playerImg = new Texture("mole_original.png");
 		rabbitImg = new Texture("rabbit_sheet_single.png");
-		soil = new Texture("Soil.png");
-		digged = new Texture("Soil_digged.png");
-		soil.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-		digged.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-		this.map = new Map();
-		this.player = new Player();
-		playerSprite = new Sprite(playerImg);
+        this.map = new Map();
+        this.player = new Player();
+        playerSprite = new Sprite(playerImg);
 		this.rabbits.add(new Rabbit(1));
 		this.shapeRenderer = new ShapeRenderer();
 		InputHandler inputHandler = new InputHandler();
@@ -73,9 +66,7 @@ public class Main extends ApplicationAdapter {
 	public void render () {
         player.update();
 		
-		for (Rabbit r : rabbits){
-			r.update();
-		}
+		updateRabbits();
 
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -127,14 +118,28 @@ public class Main extends ApplicationAdapter {
 			Worm w = i.next();
 			if (w.update()) map.wormList.remove(w);
 			else {
-				// 6 is circle radius
-				shapeRenderer.circle(w.pos.x - 3, w.pos.y - 3, 6);
+				if (w.pos.dst(player.getPos()) < 20)
+					map.wormList.remove(w);
+				else
+                    shapeRenderer.circle(w.pos.x - 3, w.pos.y - 3, 6);
+
 			}
 		}
 
 		for (int i = 0; i < 10 - map.wormList.size(); i++) {
 			map.wormList.add(new Worm(map.rand));
 		}
+	}
+
+	public void updateRabbits() {
+
+		ArrayList<Rabbit> tmp = new ArrayList<Rabbit>();
+		for (Rabbit r : rabbits){
+			if(r.update()) {
+				tmp.add(r);
+			}
+		}
+		rabbits = tmp;
 	}
 
 	public class InputHandler implements InputProcessor {
