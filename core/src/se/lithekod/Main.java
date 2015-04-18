@@ -12,12 +12,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import java.util.ArrayList;
+
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture playerImg;
     public static Map map;
     Player player;
     public static Sprite playerSprite;
+	Texture rabbitImg;
+	ArrayList<Rabbit> rabbits;
+	Sprite rabbitSprite;
 	Texture soil;
 	Texture digged;
 	public static int DESKTOP_HEIGHT;
@@ -27,10 +32,12 @@ public class Main extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		rabbits = new ArrayList<Rabbit>();
 		DESKTOP_HEIGHT = Gdx.graphics.getHeight();
 		DESKTOP_WIDTH = Gdx.graphics.getWidth();
 		batch = new SpriteBatch();
 		playerImg = new Texture("mole_original.png");
+		rabbitImg = new Texture("rabbit_sheet.png");
 		soil = new Texture("Soil.png");
 		digged = new Texture("Soil_digged.png");
 		soil.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
@@ -38,6 +45,8 @@ public class Main extends ApplicationAdapter {
         this.map = new Map();
         this.player = new Player();
         playerSprite = new Sprite(playerImg);
+		this.rabbits.add(new Rabbit());
+		rabbitSprite = new Sprite(rabbitImg);
 		InputHandler inputHandler = new InputHandler();
 		Gdx.input.setInputProcessor(inputHandler);
 
@@ -58,6 +67,10 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void render () {
         player.update();
+		
+		for (Rabbit r : rabbits){
+			r.update();
+		}
 
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -75,6 +88,8 @@ public class Main extends ApplicationAdapter {
 		playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
 		playerSprite.setRotation(player.getRotation());
 
+		rabbitSprite.setPosition(20, 20);
+
 		// Set map is cleared
 		map.setCleared(badgerPositionX, badgerPositionY);
 
@@ -84,6 +99,7 @@ public class Main extends ApplicationAdapter {
 		Texture tex = new Texture(pixmap);
 		batch.draw(tex, 0, 0);
         playerSprite.draw(batch);
+		rabbitSprite.draw(batch);
 		batch.end();
 	}
 
