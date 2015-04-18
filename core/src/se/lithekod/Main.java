@@ -40,10 +40,10 @@ public class Main extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		playerImg = new Texture("mole_original.png");
 		rabbitImg = new Texture("rabbit_sheet_single.png");
-        this.map = new Map();
+        map = new Map();
         this.player = new Player();
         playerSprite = new Sprite(playerImg);
-		this.rabbits.add(new Rabbit(1));
+		rabbits.add(new Rabbit(1, 50));
 		this.shapeRenderer = new ShapeRenderer();
 		InputHandler inputHandler = new InputHandler();
 		Gdx.input.setInputProcessor(inputHandler);
@@ -87,7 +87,8 @@ public class Main extends ApplicationAdapter {
 
 		if(count%100 == 0) {
 			int dir = (count%3 == 0) ? 1 : -1;
-			Rabbit r = new Rabbit(dir);
+			int speed = 40 + (int) Math.random()*30;
+			Rabbit r = new Rabbit(dir, speed);
 			rabbits.add(r);
 		}
 
