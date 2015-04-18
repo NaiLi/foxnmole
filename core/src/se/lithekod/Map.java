@@ -16,9 +16,15 @@ public class Map {
         }
     }
 
-    public void setCleared(float x, float y) { // TODO check bounds
-        for(int i = (int) x-15; i < x+30; i++) {
-            for (int j = (int) y-15; j < y+30; j++) {
+    public void setCleared(float x, float y) {
+
+        int digRadius = 5;
+        int startX = (x-digRadius < 0) ? 0 : (int) x-digRadius*2;
+        int endX = (x+digRadius*2 > Main.DESKTOP_WIDTH) ? Main.DESKTOP_WIDTH : (int) x+digRadius*2;
+        int startY = (y-digRadius < 0) ? 0 : (int) y-digRadius;
+        int endY = (y+digRadius*2 > Main.DESKTOP_HEIGHT-SKY_HEIGHT) ? Main.DESKTOP_HEIGHT-SKY_HEIGHT : (int) y+digRadius*2;
+        for(int i = startX; i < endX; i++) {
+            for (int j = startY ; j < endY; j++) {
                 dirtMap[i][j] = Ground.CLEARED;
                 Main.pixmap.setColor(new Color(Main.diggedMap.getPixel(i % 64, j % 64)));
                 Main.pixmap.drawPixel(i, Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT - j);
