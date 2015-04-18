@@ -54,9 +54,10 @@ public class Main extends ApplicationAdapter {
 		pixmap.fill();
 		Pixmap soilMap = new Pixmap(Gdx.files.internal("Soil.png"));
 		diggedMap = new Pixmap(Gdx.files.internal("Soil_digged.png"));
-		for (int i = 0; i < DESKTOP_WIDTH; i += soilMap.getWidth()) {
-			for (int j = 0; j < DESKTOP_HEIGHT - Map.SKY_HEIGHT; j += soilMap.getHeight()) {
-				pixmap.drawPixmap(soilMap, i,j);
+		for (int i = 0; i < DESKTOP_WIDTH; i++ ) {
+			for (int j = 0; j < DESKTOP_HEIGHT - Map.SKY_HEIGHT; j++) {
+//				pixmap.drawPixmap(soilMap, i,j);
+				pixmap.drawPixel(i, j, soilMap.getPixel(i/4 % soilMap.getWidth(), j/4 %soilMap.getHeight()));
 			}
 		}
 		Pixmap grassMap = new Pixmap(Gdx.files.internal("Grass.png"));
