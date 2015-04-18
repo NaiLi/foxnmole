@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Map {
     public static final int SKY_HEIGHT = 50;
-    public Ground[][] dirtMap;
+    public static Ground[][] dirtMap;
 
     public Map() {
         dirtMap = new Ground[Main.DESKTOP_WIDTH][Main.DESKTOP_HEIGHT - SKY_HEIGHT];
@@ -32,16 +32,19 @@ public class Map {
         }
     }
 
-    public boolean isCleared(float x, float y) {
+    public static boolean isCleared(float x, float y) {
 
-        return  dirtMap[(int) x][(int) y] == Ground.CLEARED;
+        if(!isOutOfBounds((double) x, (double) y)) {
+            return dirtMap[(int) x][(int) y] == Ground.CLEARED;
+        }
+        return false;
     }
 
     public int getSkyHeight() {
         return SKY_HEIGHT;
     }
 
-    public boolean isOutOfBounds(double x, double y) {
+    public static boolean isOutOfBounds(double x, double y) {
         if( x < 0 || x > Main.DESKTOP_WIDTH-1 || y < 0 || y > Main.DESKTOP_HEIGHT-SKY_HEIGHT-1 ) {
             return true;
         }
