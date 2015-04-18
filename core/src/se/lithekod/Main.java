@@ -59,7 +59,11 @@ public class Main extends ApplicationAdapter {
 				pixmap.drawPixmap(soilMap, i,j);
 			}
 		}
-		pixmap.setColor(0, 0, 0, 0);
+		Pixmap grassMap = new Pixmap(Gdx.files.internal("Grass.png"));
+		for (int x = 0; x < DESKTOP_WIDTH; x += grassMap.getWidth()) {
+			pixmap.drawPixmap(grassMap, x, 0);
+
+		}
 	}
 
 	@Override
