@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -14,25 +13,24 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 public class Main extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture playerImg;
+    SpriteBatch batch;
+    Texture playerImg;
     public static Map map;
     Player player;
     public static Sprite playerSprite;
 	Texture rabbitImg;
 	ArrayList<Rabbit> rabbits;
-	Sprite rabbitSprite;
 	public static int DESKTOP_HEIGHT;
 	public static int DESKTOP_WIDTH;
 	public static Pixmap pixmap;
 	public static Pixmap diggedMap;
 	ShapeRenderer shapeRenderer;
-	
+	private int count = 0;
+
 	@Override
 	public void create () {
 		rabbits = new ArrayList<Rabbit>();
@@ -44,8 +42,7 @@ public class Main extends ApplicationAdapter {
         this.map = new Map();
         this.player = new Player();
         playerSprite = new Sprite(playerImg);
-		this.rabbits.add(new Rabbit());
-		rabbitSprite = new Sprite(rabbitImg);
+		this.rabbits.add(new Rabbit(1));
 		this.shapeRenderer = new ShapeRenderer();
 		InputHandler inputHandler = new InputHandler();
 		Gdx.input.setInputProcessor(inputHandler);
@@ -89,7 +86,11 @@ public class Main extends ApplicationAdapter {
 		playerSprite.setRotation(player.getRotation());
 		playerSprite.setRotation(player.getRotation());
 
-		rabbitSprite.setPosition(rabbits.get(0).getPos().x - rabbitSprite.getWidth()/2, rabbits.get(0).getPos().y - rabbitSprite.getHeight()/2);
+		if(count%100 == 0) {
+			int dir = (count%3 == 0) ? 1 : -1;
+			Rabbit r = new Rabbit(dir);
+			rabbits.add(r);
+		}
 
 		// Set map is cleared
 		map.setCleared(badgerPositionX, badgerPositionY);
@@ -100,11 +101,15 @@ public class Main extends ApplicationAdapter {
 		Texture ground = new Texture(pixmap);
 		batch.draw(ground, 0, 0);
         playerSprite.draw(batch);
-		rabbitSprite.draw(batch);
+		for(int i = 0; i < rabbits.size(); i++) {
+			batch.draw(rabbitImg, rabbits.get(i).getPos().x, rabbits.get(i).getPos().y);
+		}
 		batch.end();
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		updateWorms();
 		shapeRenderer.end();
+
+		count++;
 	}
 
 	public void updateWorms() {
@@ -122,7 +127,6 @@ public class Main extends ApplicationAdapter {
 		for (int i = 0; i < 10 - map.wormList.size(); i++) {
 			map.wormList.add(new Worm(map.rand));
 		}
-
 	}
 
 	public class InputHandler implements InputProcessor {
