@@ -17,10 +17,11 @@ public class Map {
 
     public void setCleared(float x, float y) {
 
-        int startX = (x-15 < 0) ? 0 : (int) x-15;
-        int endX = (x+30 > Main.DESKTOP_WIDTH) ? Main.DESKTOP_WIDTH : (int) x+30;
-        int startY = (y-15 < 0) ? 0 : (int) y-15;
-        int endY = (y+30 > Main.DESKTOP_HEIGHT-SKY_HEIGHT) ? Main.DESKTOP_HEIGHT-SKY_HEIGHT : (int) y+30;
+        int digRadius = 5;
+        int startX = (x-digRadius < 0) ? 0 : (int) x-digRadius*2;
+        int endX = (x+digRadius*2 > Main.DESKTOP_WIDTH) ? Main.DESKTOP_WIDTH : (int) x+digRadius*2;
+        int startY = (y-digRadius < 0) ? 0 : (int) y-digRadius;
+        int endY = (y+digRadius*2 > Main.DESKTOP_HEIGHT-SKY_HEIGHT) ? Main.DESKTOP_HEIGHT-SKY_HEIGHT : (int) y+digRadius*2;
         for(int i = startX; i < endX; i++) {
             for (int j = startY ; j < endY; j++) {
                 dirtMap[i][j] = Ground.CLEARED;
