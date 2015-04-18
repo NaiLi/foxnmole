@@ -12,7 +12,9 @@ public class Player {
     private PlayerState state = PlayerState.IDLE;
     private float angle = 0;
     public static final float rotationSpeed = 4;
-    public static final float crawlingSpeed = 5;
+    public static float crawlingSpeed = 5;
+    private static final int FAST = 5;
+    private static final int SLOW = 2;
 
     private boolean rightPressed = false;
     private boolean leftPressed = false;
@@ -24,6 +26,8 @@ public class Player {
     }
 
     public void update() {
+
+
         float deltaTime = Gdx.graphics.getDeltaTime();
         if  (rightPressed && !leftPressed){
             angle -= (deltaTime * rotationSpeed) % (2 * Math.PI);
@@ -40,6 +44,24 @@ public class Player {
         }
 
         if (upPressed) {
+
+            int steps = (int) Main.playerSprite.getWidth()/2;
+
+            int x = (int) (pos.x + ((Math.cos(angle) * pos.x)/Math.abs(Math.cos(angle) * pos.x)) * steps);
+            int y = (int) (pos.y + ((Math.cos(angle) * pos.y)/Math.abs(Math.cos(angle) * pos.y)) * steps);
+
+            if ( !Main.map.isOutOfBounds (x, y)) {
+
+                if (Main.map.isCleared((int) (pos.x + ((Math.cos(angle) * pos.x)/Math.abs(Math.cos(angle) * pos.x)) * steps), (int) (pos.y + ((Math.cos(angle) * pos.y)/Math.abs(Math.cos(angle) * pos.y)) * steps))) {
+                    state = PlayerState.MOVING;
+                    crawlingSpeed = FAST;
+
+                } else {
+                    state = PlayerState.DIGGING;
+                    crawlingSpeed = SLOW;
+                }
+            }
+
             pos.x += Math.cos(angle) * crawlingSpeed;
             pos.y += Math.sin(angle) * crawlingSpeed;
         }

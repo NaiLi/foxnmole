@@ -15,9 +15,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture playerImg;
-    Map map;
+    public static Map map;
     Player player;
-    Sprite playerSprite;
+    public static Sprite playerSprite;
 	Texture soil;
 	Texture digged;
 	public static int DESKTOP_HEIGHT;
@@ -58,8 +58,6 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void render () {
         player.update();
-
-		System.out.println(pixmap.getPixel(150, 50));
 
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
