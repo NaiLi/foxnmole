@@ -1,6 +1,7 @@
 package se.lithekod;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -31,6 +32,7 @@ public class GameScreen implements Screen {
     private int count = 0;
     Animation worm;
     public static final float WORM_SPEED = 0.07f;
+    Sound slurp;
 
     @Override
     public void show() {
@@ -42,6 +44,7 @@ public class GameScreen implements Screen {
         playerImg = new Texture(Gdx.files.internal("mole_original.png"));
         this.map = new Map();
         this.player = new Player();
+        this.slurp = Gdx.audio.newSound(Gdx.files.internal("slurp.mp3"));
         playerSprite = new Sprite(playerImg);
         this.rabbits.add(new Rabbit(1, 50));
         makeAnimation();
@@ -140,6 +143,7 @@ public class GameScreen implements Screen {
         pixmap.dispose();
         diggedMap.dispose();
         this.ground.dispose();
+        this.slurp.dispose();
 
 
     }
@@ -168,6 +172,7 @@ public class GameScreen implements Screen {
             if (w.update()) map.wormList.remove(w);
             else {
                 if (w.pos.dst(player.getPos()) < 20){
+                    slurp.play();
                     player.energy += 1000;
                     map.wormList.remove(w);
                 }

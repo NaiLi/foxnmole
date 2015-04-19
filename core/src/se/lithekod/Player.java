@@ -11,7 +11,7 @@ public class Player {
     private Vector2 pos = new Vector2(250, Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT);
     private PlayerState state = PlayerState.IDLE;
     private float angle = 0;
-    public static final float rotationSpeed = 2;
+    public static final float rotationSpeed = 4;
     public static float crawlingSpeed = 100;
     public static float diggingSpeed = 50;
     private static final int FAST = 5;
