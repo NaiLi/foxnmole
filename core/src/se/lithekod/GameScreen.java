@@ -27,6 +27,7 @@ public class GameScreen implements Screen {
     ArrayList<Rabbit> rabbits;
     public static Pixmap pixmap;
     public static Pixmap diggedMap;
+    Texture ground;
     private int count = 0;
     Animation worm;
     public static final float WORM_SPEED = 0.07f;
@@ -94,7 +95,7 @@ public class GameScreen implements Screen {
 		if (player.getRotation() > 90 && player.getRotation() < 270)
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
-		Texture ground = new Texture(pixmap);
+		ground = new Texture(pixmap);
 		batch.begin();
 		batch.draw(ground, 0, 0);
         playerSprite.draw(batch);
@@ -108,7 +109,6 @@ public class GameScreen implements Screen {
 		updateWorms();
 		batch.end();
 
-        ground.dispose();
 		count++;
     }
 
@@ -119,6 +119,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new MenuScreen());
     }
 
     @Override
@@ -138,6 +139,7 @@ public class GameScreen implements Screen {
         this.batch.dispose();
         pixmap.dispose();
         diggedMap.dispose();
+        this.ground.dispose();
 
 
     }
@@ -206,6 +208,9 @@ public class GameScreen implements Screen {
                     return true;
                 case Input.Keys.SPACE:
                     player.setDigging(true);
+                    return true;
+                case Input.Keys.ESCAPE:
+                    pause();
                     return true;
                 default:
                     return false;

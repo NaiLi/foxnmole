@@ -2,10 +2,12 @@ package se.lithekod;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -23,6 +25,8 @@ public class MenuScreen implements Screen {
     private TextButton playButton;
     private TextButton exitButton;
 
+    static private GameScreen runningGame = null;
+
     @Override
     public void show() {
         backdrop = new Texture(Gdx.files.internal("startscreen_with_tass.png"));
@@ -36,7 +40,15 @@ public class MenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
+                startGame();
+            }
+        });
+        playButton.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.ENTER)
+                    startGame();
+                return false;
             }
         });
         exitButton.addListener(new ClickListener(){
@@ -58,6 +70,13 @@ public class MenuScreen implements Screen {
         stage.addActor(table);
 
         Gdx.input.setInputProcessor(stage);
+        //System.out.println(Gdx.input.getInputProcessor());
+    }
+
+    private void startGame() {
+        if (runningGame == null)
+            runningGame = new GameScreen();
+        ((Game) Gdx.app.getApplicationListener()).setScreen(runningGame);
     }
 
     @Override
