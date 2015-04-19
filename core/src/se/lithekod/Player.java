@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Player {
 
-    private Vector2 pos = new Vector2(50, Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT);
+    private Vector2 pos = new Vector2(250, Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT);
     private PlayerState state = PlayerState.IDLE;
     private float angle = 0;
     public static final float rotationSpeed = 2;
