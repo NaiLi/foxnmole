@@ -229,8 +229,9 @@ public class GameScreen implements Screen {
             else {
                 if (w.pos.dst(player.getPos()) < 20){
                     slurp.play();
-                    player.energy += 100;
-                    if (player.wormCounter++ > 20) {
+                    player.energy += 1000;
+                    if (player.wormCounter++ > 10) {
+                        rabbits.clear();
                         player.wormCounter = 0;
                     }
                     map.wormList.remove(w);
