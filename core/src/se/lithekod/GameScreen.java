@@ -101,6 +101,8 @@ public class GameScreen implements Screen {
 		if (player.getRotation() > 90 && player.getRotation() < 270)
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
+        if (ground != null)
+            ground.dispose();
 		ground = new Texture(pixmap);
 		batch.begin();
 		batch.draw(ground, 0, 0);
