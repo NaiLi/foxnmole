@@ -85,7 +85,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if(rabbits.size() < 40) {
+        if(rabbits.size() < 30) {
 
             ground.dispose();
             player.update();
@@ -195,8 +195,13 @@ public class GameScreen implements Screen {
     }
 
     public void gameOver() {
-        System.out.println("Game over...... :(");
 
+        title = new Label("GAME OVER", uiSkin);
+        Table t = new Table();
+        t.setFillParent(true);
+        t.add(title);
+        stage.addActor(t);
+        stage.draw();
     }
 
     public void updateRabbits() {
