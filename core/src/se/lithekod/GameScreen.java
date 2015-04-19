@@ -24,7 +24,7 @@ public class GameScreen implements Screen {
     SpriteBatch batch;
     Texture playerImg;
     public static Map map;
-    Player player;
+    public static Player player;
     public static Sprite playerSprite;
     Texture rabbitImg;
     ArrayList<Rabbit> rabbits;
@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		// Check so badger dont go outside of dirt
+		// Check so badger doesn't go outside of dirt
 		float badgerPositionX = player.getPos().x;
 		badgerPositionX = (badgerPositionX < playerSprite.getWidth() / 2) ? playerSprite.getWidth() / 2 : badgerPositionX;
 		badgerPositionX = (badgerPositionX > Main.DESKTOP_WIDTH - playerSprite.getWidth() / 2) ? (float) Main.DESKTOP_WIDTH - playerSprite.getWidth() / 2: badgerPositionX;
@@ -83,11 +83,10 @@ public class GameScreen implements Screen {
 
 		playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
 		playerSprite.setRotation(player.getRotation());
-		playerSprite.setRotation(player.getRotation());
 
         if(count%100 == 0) {
             int dir = (count % 3 == 0) ? 1 : -1;
-            int speed = 40 + (int) Math.random() * 30;
+            int speed = 40 + (int) (Math.random() * 30);
             Rabbit r = new Rabbit(dir, speed);
             rabbits.add(r);
         }
@@ -102,6 +101,7 @@ public class GameScreen implements Screen {
 		batch.begin();
 		batch.draw(ground, 0, 0);
         playerSprite.draw(batch);
+
 		for(int i = 0; i < rabbits.size(); i++) {
             String imgUrl = (rabbits.get(i).getDirection() == 1) ? "1" : "2";
             imgUrl = "rabbit_sheet_single-" + imgUrl + ".png";
@@ -139,6 +139,9 @@ public class GameScreen implements Screen {
         this.playerImg.dispose();
         this.rabbitImg.dispose();
         this.batch.dispose();
+        pixmap.dispose();
+        diggedMap.dispose();
+
 
     }
 
@@ -165,8 +168,10 @@ public class GameScreen implements Screen {
             Worm w = i.next();
             if (w.update()) map.wormList.remove(w);
             else {
-                if (w.pos.dst(player.getPos()) < 20)
+                if (w.pos.dst(player.getPos()) < 20){
+                    player.energy += 1000;
                     map.wormList.remove(w);
+                }
                 else {
                     TextureRegion wormFrame = worm.getKeyFrame(w.stateTime, true);
                     batch.draw(wormFrame, w.pos.x - wormFrame.getRegionWidth()/2,
@@ -202,6 +207,9 @@ public class GameScreen implements Screen {
                 case Input.Keys.RIGHT:
                     player.setRightPressed(true);
                     return true;
+                case Input.Keys.SPACE:
+                    player.setDigging(true);
+                    return true;
                 default:
                     return false;
             }
@@ -221,6 +229,9 @@ public class GameScreen implements Screen {
                     return true;
                 case Input.Keys.RIGHT:
                     player.setRightPressed(false);
+                    return true;
+                case Input.Keys.SPACE:
+                    player.setDigging(false);
                     return true;
                 default:
                     return false;
