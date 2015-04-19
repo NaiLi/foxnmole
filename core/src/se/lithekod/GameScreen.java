@@ -161,7 +161,7 @@ public class GameScreen implements Screen {
 
     public void updateGameBar() {
         energyLbl.setText("Energy level: " + player.energy / 1000 + "      level: " + level);
-        numOfRabbitsLbl.setText("Rabbit count: " + rabbits.size());
+        numOfRabbitsLbl.setText("Rabbit count: " + rabbits.size() + "      worms: " + player.wormCounter);
         stage.draw();
     }
 
@@ -231,7 +231,7 @@ public class GameScreen implements Screen {
                 if (w.pos.dst(player.getPos()) < 20){
                     slurp.play();
                     player.energy += 1000;
-                    if (player.wormCounter++ > 5) {
+                    if (player.wormCounter++ > 4) {
                         rabbits.clear();
                         level++;
                         player.wormCounter = 0;
