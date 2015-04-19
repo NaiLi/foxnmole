@@ -42,7 +42,6 @@ public class GameScreen implements Screen {
         rabbits = new ArrayList<Rabbit>();
         batch = new SpriteBatch();
         playerImg = new Texture(Gdx.files.internal("mole_original.png"));
-        rabbitImg = new Texture(Gdx.files.internal("rabbit_sheet_single.png"));
         this.map = new Map();
         this.player = new Player();
         playerSprite = new Sprite(playerImg);
@@ -104,6 +103,9 @@ public class GameScreen implements Screen {
 		batch.draw(ground, 0, 0);
         playerSprite.draw(batch);
 		for(int i = 0; i < rabbits.size(); i++) {
+            String imgUrl = (rabbits.get(i).getDirection() == 1) ? "1" : "2";
+            imgUrl = "rabbit_sheet_single-" + imgUrl + ".png";
+            rabbitImg = new Texture(imgUrl);
 			batch.draw(rabbitImg, rabbits.get(i).getPos().x, rabbits.get(i).getPos().y);
 		}
 		updateWorms();
