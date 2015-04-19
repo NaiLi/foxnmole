@@ -43,12 +43,12 @@ public class GameScreen implements Screen {
 
         rabbits = new ArrayList<Rabbit>();
         batch = new SpriteBatch();
-        playerImg = new Texture("mole_original.png");
-        rabbitImg = new Texture("rabbit_sheet_single.png");
+        playerImg = new Texture(Gdx.files.internal("mole_original.png"));
+        rabbitImg = new Texture(Gdx.files.internal("rabbit_sheet_single.png"));
         this.map = new Map();
         this.player = new Player();
         playerSprite = new Sprite(playerImg);
-        this.rabbits.add(new Rabbit(1));
+        this.rabbits.add(new Rabbit(1, 50));
         this.shapeRenderer = new ShapeRenderer();
         makeAnimation();
         pixmap = new Pixmap(Main.DESKTOP_WIDTH, Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT, Pixmap.Format.RGBA8888);
@@ -89,11 +89,12 @@ public class GameScreen implements Screen {
 		playerSprite.setRotation(player.getRotation());
 		playerSprite.setRotation(player.getRotation());
 
-		if(count%100 == 0) {
-			int dir = (count%3 == 0) ? 1 : -1;
-			Rabbit r = new Rabbit(dir);
-			rabbits.add(r);
-		}
+        if(count%100 == 0) {
+            int dir = (count % 3 == 0) ? 1 : -1;
+            int speed = 40 + (int) Math.random() * 30;
+            Rabbit r = new Rabbit(dir, speed);
+            rabbits.add(r);
+        }
 
 		// Set map is cleared
 		map.setCleared(badgerPositionX, badgerPositionY);
