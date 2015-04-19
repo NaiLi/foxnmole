@@ -33,10 +33,10 @@ public class GameScreen implements Screen {
     Animation worm;
     public static final float WORM_SPEED = 0.07f;
     Sound slurp;
+    InputHandler inputHandler;
 
     public GameScreen() {
-        InputHandler inputHandler = new InputHandler();
-        Gdx.input.setInputProcessor(inputHandler);
+        this.inputHandler = new InputHandler();
 
         rabbits = new ArrayList<Rabbit>();
         batch = new SpriteBatch();
@@ -66,6 +66,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(inputHandler);
     }
 
     @Override
@@ -137,7 +138,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
     }
 
     @Override
@@ -178,7 +178,10 @@ public class GameScreen implements Screen {
             else {
                 if (w.pos.dst(player.getPos()) < 20){
                     slurp.play();
-                    player.energy += 1000;
+                    player.energy += 100;
+                    if (player.wormCounter++ > 20) {
+                        player.wormCounter = 0;
+                    }
                     map.wormList.remove(w);
                 }
                 else {
