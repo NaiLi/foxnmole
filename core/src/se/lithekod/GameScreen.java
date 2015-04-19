@@ -62,10 +62,12 @@ public class GameScreen implements Screen {
         for (int x = 0; x < Main.DESKTOP_WIDTH; x += grassMap.getWidth()) {
             pixmap.drawPixmap(grassMap, x, 0);
         }
+        ground = new Texture(pixmap);
     }
 
     @Override
     public void render(float delta) {
+        ground.dispose();
         player.update();
 
 		updateRabbits();
