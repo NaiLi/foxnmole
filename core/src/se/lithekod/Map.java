@@ -57,25 +57,15 @@ public class Map {
     }
 
     public static boolean isCleared(float x, float y) {
-
-        if(!isOutOfBounds((double) x, (double) y)) {
-            return dirtMap[(int) x][(int) y] == Ground.CLEARED;
-        }
-        return false;
+        return !isOutOfBounds(x, y) && dirtMap[(int) x][(int) y] == Ground.CLEARED;
     }
 
     public boolean isRabbit(float x, float y) {
-        if(!isOutOfBounds((double) x, (double) y)) {
-            return dirtMap[(int) x] [(int) y] == Ground.RABBIT;
-        }
-        return false;
+        return !isOutOfBounds(x, y) && dirtMap[(int) x][(int) y] == Ground.RABBIT;
     }
 
     public boolean isWalkable(float x, float y) {
-        if(isCleared(x, y) && !isRabbit(x,y)) {
-            return true;
-        }
-        return false;
+        return isCleared(x, y) && !isRabbit(x, y);
     }
 
     public int getSkyHeight() {
@@ -83,9 +73,6 @@ public class Map {
     }
 
     public static boolean isOutOfBounds(double x, double y) {
-        if( x < 0 || x > Main.DESKTOP_WIDTH-1 || y < 0 || y > Main.DESKTOP_HEIGHT-SKY_HEIGHT-1 ) {
-            return true;
-        }
-        return false;
+        return x < 0 || x > Main.DESKTOP_WIDTH - 1 || y < 0 || y > Main.DESKTOP_HEIGHT - SKY_HEIGHT - 1;
     }
 }

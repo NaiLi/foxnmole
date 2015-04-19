@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		// Check so badger dont go outside of dirt
+		// Check so badger doesn't go outside of dirt
 		float badgerPositionX = player.getPos().x;
 		badgerPositionX = (badgerPositionX < playerSprite.getWidth() / 2) ? playerSprite.getWidth() / 2 : badgerPositionX;
 		badgerPositionX = (badgerPositionX > Main.DESKTOP_WIDTH - playerSprite.getWidth() / 2) ? (float) Main.DESKTOP_WIDTH - playerSprite.getWidth() / 2: badgerPositionX;
@@ -88,7 +88,7 @@ public class GameScreen implements Screen {
 
         if(count%100 == 0) {
             int dir = (count % 3 == 0) ? 1 : -1;
-            int speed = 40 + (int) Math.random() * 30;
+            int speed = 40 + (int) (Math.random() * 30);
             Rabbit r = new Rabbit(dir, speed);
             rabbits.add(r);
         }
@@ -103,9 +103,9 @@ public class GameScreen implements Screen {
 		batch.begin();
 		batch.draw(ground, 0, 0);
         playerSprite.draw(batch);
-		for(int i = 0; i < rabbits.size(); i++) {
-			batch.draw(rabbitImg, rabbits.get(i).getPos().x, rabbits.get(i).getPos().y);
-		}
+        for (Rabbit rabbit : rabbits) {
+            batch.draw(rabbitImg, rabbit.getPos().x, rabbit.getPos().y);
+        }
 		updateWorms();
 		batch.end();
 
