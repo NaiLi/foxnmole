@@ -76,56 +76,64 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        player.update();
 
-		updateRabbits();
+        if(rabbits.size() < 40) {
 
-		Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            player.update();
 
-		// Check so badger doesn't go outside of dirt
-		float badgerPositionX = player.getPos().x;
-		badgerPositionX = (badgerPositionX < playerSprite.getWidth() / 2) ? playerSprite.getWidth() / 2 : badgerPositionX;
-		badgerPositionX = (badgerPositionX > Main.DESKTOP_WIDTH - playerSprite.getWidth() / 2) ? (float) Main.DESKTOP_WIDTH - playerSprite.getWidth() / 2: badgerPositionX;
-		float badgerPositionY = player.getPos().y;
-		badgerPositionY = (badgerPositionY < playerSprite.getHeight() / 2) ? playerSprite.getHeight() / 2 : badgerPositionY;
-		badgerPositionY = (badgerPositionY > Main.DESKTOP_HEIGHT - playerSprite.getHeight() / 2 - map.getSkyHeight()) ? (float) Main.DESKTOP_HEIGHT - playerSprite.getHeight() / 2 - map.getSkyHeight(): badgerPositionY;
-		player.setPos(badgerPositionX, badgerPositionY);
+            updateRabbits();
 
-		playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
-		playerSprite.setRotation(player.getRotation());
+            Gdx.gl.glClearColor(.1f, .7f, .99f, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(count%120 == 0) {
-            int dir = (count % 3 == 0) ? 1 : -1;
-            int speed = 40 + (int) (Math.random() * 30);
-            Rabbit r = new Rabbit(dir, speed);
-            rabbits.add(r);
+            // Check so badger doesn't go outside of dirt
+            float badgerPositionX = player.getPos().x;
+            badgerPositionX = (badgerPositionX < playerSprite.getWidth() / 2) ? playerSprite.getWidth() / 2 : badgerPositionX;
+            badgerPositionX = (badgerPositionX > Main.DESKTOP_WIDTH - playerSprite.getWidth() / 2) ? (float) Main.DESKTOP_WIDTH - playerSprite.getWidth() / 2: badgerPositionX;
+            float badgerPositionY = player.getPos().y;
+            badgerPositionY = (badgerPositionY < playerSprite.getHeight() / 2) ? playerSprite.getHeight() / 2 : badgerPositionY;
+            badgerPositionY = (badgerPositionY > Main.DESKTOP_HEIGHT - playerSprite.getHeight() / 2 - map.getSkyHeight()) ? (float) Main.DESKTOP_HEIGHT - playerSprite.getHeight() / 2 - map.getSkyHeight(): badgerPositionY;
+            player.setPos(badgerPositionX, badgerPositionY);
+
+            playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
+            playerSprite.setRotation(player.getRotation());
+
+            if(count%120 == 0) {
+                int dir = (count % 3 == 0) ? 1 : -1;
+                int speed = 40 + (int) (Math.random() * 30);
+                Rabbit r = new Rabbit(dir, speed);
+                rabbits.add(r);
+            }
+
+            // Set map is cleared
+            map.setCleared(badgerPositionX, badgerPositionY);
+
+            if (player.getRotation() > 90 && player.getRotation() < 270) {
+                playerSprite.setFlip(false, true);
+            }
+            else playerSprite.setFlip(false, false);
+            if (ground != null) {
+                ground.dispose();
+            }
+            ground = new Texture(pixmap);
+            batch.begin();
+            batch.draw(ground, 0, 0);
+            playerSprite.draw(batch);
+
+            for (Rabbit rabbit : rabbits) {
+                String imgUrl = (rabbit.getDirection() == 1) ? "1" : "2";
+                imgUrl = "rabbit_sheet_single-" + imgUrl + ".png";
+                rabbitImg = new Texture(imgUrl);
+                batch.draw(rabbitImg, rabbit.getPos().x, rabbit.getPos().y);
+            }
+            updateWorms();
+            batch.end();
+            updateGameBar();
+
+            count++;
+        } else {
+            gameOver();
         }
-
-		// Set map is cleared
-		map.setCleared(badgerPositionX, badgerPositionY);
-
-		if (player.getRotation() > 90 && player.getRotation() < 270)
-			playerSprite.setFlip(false, true);
-		else playerSprite.setFlip(false, false);
-        if (ground != null)
-            ground.dispose();
-		ground = new Texture(pixmap);
-		batch.begin();
-		batch.draw(ground, 0, 0);
-        playerSprite.draw(batch);
-
-        for (Rabbit rabbit : rabbits) {
-            String imgUrl = (rabbit.getDirection() == 1) ? "1" : "2";
-            imgUrl = "rabbit_sheet_single-" + imgUrl + ".png";
-            rabbitImg = new Texture(imgUrl);
-			batch.draw(rabbitImg, rabbit.getPos().x, rabbit.getPos().y);
-		}
-        updateWorms();
-        batch.end();
-        updateGameBar();
-
-		count++;
     }
 
     private void initGameBar() {
@@ -176,7 +184,10 @@ public class GameScreen implements Screen {
         diggedMap.dispose();
         this.ground.dispose();
         this.slurp.dispose();
+    }
 
+    public void gameOver() {
+        System.out.println("Game over...... :(");
 
     }
 
