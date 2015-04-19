@@ -34,8 +34,7 @@ public class GameScreen implements Screen {
     public static final float WORM_SPEED = 0.07f;
     Sound slurp;
 
-    @Override
-    public void show() {
+    public GameScreen() {
         InputHandler inputHandler = new InputHandler();
         Gdx.input.setInputProcessor(inputHandler);
 
@@ -63,6 +62,10 @@ public class GameScreen implements Screen {
             pixmap.drawPixmap(grassMap, x, 0);
         }
         ground = new Texture(pixmap);
+    }
+
+    @Override
+    public void show() {
     }
 
     @Override
