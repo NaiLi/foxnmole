@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -31,7 +30,6 @@ public class GameScreen implements Screen {
     ArrayList<Rabbit> rabbits;
     public static Pixmap pixmap;
     public static Pixmap diggedMap;
-    ShapeRenderer shapeRenderer;
     private int count = 0;
     Animation worm;
     public static final float WORM_SPEED = 0.07f;
@@ -49,7 +47,6 @@ public class GameScreen implements Screen {
         this.player = new Player();
         playerSprite = new Sprite(playerImg);
         this.rabbits.add(new Rabbit(1, 50));
-        this.shapeRenderer = new ShapeRenderer();
         makeAnimation();
         pixmap = new Pixmap(Main.DESKTOP_WIDTH, Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT, Pixmap.Format.RGBA8888);
         pixmap.setColor(.1f, .7f, .99f, 1);
@@ -137,6 +134,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        this.playerImg.dispose();
+        this.rabbitImg.dispose();
+        this.batch.dispose();
 
     }
 
@@ -158,7 +158,6 @@ public class GameScreen implements Screen {
     }
 
     public void updateWorms() {
-        shapeRenderer.setColor(Color.GREEN);
         LinkedList<Worm> tmp = new LinkedList<Worm>(map.wormList);
         for (ListIterator<Worm> i = tmp.listIterator() ; i.hasNext();){
             Worm w = i.next();
