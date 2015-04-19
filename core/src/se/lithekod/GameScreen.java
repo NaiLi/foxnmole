@@ -10,14 +10,16 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-/**
- * Created by henning on 15-04-18.
- */
 public class GameScreen implements Screen {
     SpriteBatch batch;
     Texture playerImg;
@@ -35,9 +37,16 @@ public class GameScreen implements Screen {
     Sound slurp;
     InputHandler inputHandler;
 
-    public GameScreen() {
-        this.inputHandler = new InputHandler();
+    private Stage stage;
+    private Skin uiSkin;
+    private Table gameBar;
+    private Label title;
+    private Label energyLbl;
+    private Label numOfRabbitsLbl;
 
+    public GameScreen() {
+
+        InputHandler inputHandler = new InputHandler();
         rabbits = new ArrayList<Rabbit>();
         batch = new SpriteBatch();
         playerImg = new Texture(Gdx.files.internal("mole_original.png"));
@@ -62,11 +71,15 @@ public class GameScreen implements Screen {
             pixmap.drawPixmap(grassMap, x, 0);
         }
         ground = new Texture(pixmap);
+        this.inputHandler = new InputHandler();
+        initGameBar();
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(inputHandler);
+
+
     }
 
     @Override
@@ -104,21 +117,43 @@ public class GameScreen implements Screen {
 		if (player.getRotation() > 90 && player.getRotation() < 270)
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
+        if (ground != null)
+            ground.dispose();
 		ground = new Texture(pixmap);
 		batch.begin();
 		batch.draw(ground, 0, 0);
         playerSprite.draw(batch);
 
-		for(int i = 0; i < rabbits.size(); i++) {
-            String imgUrl = (rabbits.get(i).getDirection() == 1) ? "1" : "2";
+        for (Rabbit rabbit : rabbits) {
+            String imgUrl = (rabbit.getDirection() == 1) ? "1" : "2";
             imgUrl = "rabbit_sheet_single-" + imgUrl + ".png";
             rabbitImg = new Texture(imgUrl);
-			batch.draw(rabbitImg, rabbits.get(i).getPos().x, rabbits.get(i).getPos().y);
+			batch.draw(rabbitImg, rabbit.getPos().x, rabbit.getPos().y);
 		}
-		updateWorms();
-		batch.end();
+        updateWorms();
+        batch.end();
+        updateGameBar();
 
 		count++;
+    }
+
+    private void initGameBar() {
+        stage = new Stage();
+        uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
+        energyLbl = new Label("Energy level: 0", uiSkin);
+        numOfRabbitsLbl = new Label("Rabbit count: 0", uiSkin);
+        gameBar = new Table();
+        gameBar.add(energyLbl).padTop(0).row();
+        gameBar.add(numOfRabbitsLbl).padBottom(0).row();
+        gameBar.setFillParent(true);
+        gameBar.align(Align.topLeft);
+        stage.addActor(gameBar);
+    }
+
+    public void updateGameBar() {
+        energyLbl.setText("Energy level: " + player.energy / 1000);
+        numOfRabbitsLbl.setText("Rabbit count: " + rabbits.size());
+        stage.draw();
     }
 
     @Override
@@ -186,10 +221,10 @@ public class GameScreen implements Screen {
                 }
                 else {
                     TextureRegion wormFrame = worm.getKeyFrame(w.stateTime, true);
-                    batch.draw(wormFrame, w.pos.x - wormFrame.getRegionWidth()/2,
-                            w.pos.y - wormFrame.getRegionWidth()/2,
-                            wormFrame.getRegionWidth()/2,
-                            wormFrame.getRegionHeight()/2,
+                    batch.draw(wormFrame, w.pos.x - wormFrame.getRegionWidth() / 2,
+                            w.pos.y - wormFrame.getRegionWidth() / 2,
+                            wormFrame.getRegionWidth() / 2,
+                            wormFrame.getRegionHeight() / 2,
                             wormFrame.getRegionWidth(),
                             wormFrame.getRegionHeight(),
                             .25f, .25f,
