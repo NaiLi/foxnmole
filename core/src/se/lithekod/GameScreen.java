@@ -1,9 +1,7 @@
 package se.lithekod;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -32,9 +30,11 @@ public class GameScreen implements Screen {
     ArrayList<Rabbit> rabbits;
     public static Pixmap pixmap;
     public static Pixmap diggedMap;
+    Texture ground;
     private int count = 0;
     Animation worm;
     public static final float WORM_SPEED = 0.07f;
+    Sound slurp;
 
     private Stage stage;
     private Skin uiSkin;
@@ -53,6 +53,7 @@ public class GameScreen implements Screen {
         playerImg = new Texture(Gdx.files.internal("mole_original.png"));
         this.map = new Map();
         this.player = new Player();
+        this.slurp = Gdx.audio.newSound(Gdx.files.internal("slurp.mp3"));
         playerSprite = new Sprite(playerImg);
         this.rabbits.add(new Rabbit(1, 50));
         makeAnimation();
@@ -94,7 +95,7 @@ public class GameScreen implements Screen {
 		playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
 		playerSprite.setRotation(player.getRotation());
 
-        if(count%100 == 0) {
+        if(count%120 == 0) {
             int dir = (count % 3 == 0) ? 1 : -1;
             int speed = 40 + (int) (Math.random() * 30);
             Rabbit r = new Rabbit(dir, speed);
@@ -107,21 +108,22 @@ public class GameScreen implements Screen {
 		if (player.getRotation() > 90 && player.getRotation() < 270)
 			playerSprite.setFlip(false, true);
 		else playerSprite.setFlip(false, false);
-		Texture ground = new Texture(pixmap);
+        if (ground != null)
+            ground.dispose();
+		ground = new Texture(pixmap);
 		batch.begin();
 		batch.draw(ground, 0, 0);
         playerSprite.draw(batch);
 
-		for(int i = 0; i < rabbits.size(); i++) {
-            String imgUrl = (rabbits.get(i).getDirection() == 1) ? "1" : "2";
+        for (Rabbit rabbit : rabbits) {
+            String imgUrl = (rabbit.getDirection() == 1) ? "1" : "2";
             imgUrl = "rabbit_sheet_single-" + imgUrl + ".png";
             rabbitImg = new Texture(imgUrl);
-			batch.draw(rabbitImg, rabbits.get(i).getPos().x, rabbits.get(i).getPos().y);
+			batch.draw(rabbitImg, rabbit.getPos().x, rabbit.getPos().y);
 		}
         updateWorms();
         batch.end();
         updateGameBar();
-
 
 		count++;
     }
@@ -152,7 +154,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new MenuScreen());
     }
 
     @Override
@@ -172,6 +174,8 @@ public class GameScreen implements Screen {
         this.batch.dispose();
         pixmap.dispose();
         diggedMap.dispose();
+        this.ground.dispose();
+        this.slurp.dispose();
 
 
     }
@@ -200,6 +204,7 @@ public class GameScreen implements Screen {
             if (w.update()) map.wormList.remove(w);
             else {
                 if (w.pos.dst(player.getPos()) < 20){
+                    slurp.play();
                     player.energy += 1000;
                     map.wormList.remove(w);
                 }
@@ -240,6 +245,9 @@ public class GameScreen implements Screen {
                     return true;
                 case Input.Keys.SPACE:
                     player.setDigging(true);
+                    return true;
+                case Input.Keys.ESCAPE:
+                    pause();
                     return true;
                 default:
                     return false;
