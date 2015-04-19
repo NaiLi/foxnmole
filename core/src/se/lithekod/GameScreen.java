@@ -36,7 +36,7 @@ public class GameScreen implements Screen {
     public static final float WORM_SPEED = 0.07f;
     Sound slurp;
     InputHandler inputHandler;
-    public static int level = 200; //decreases
+    public static int level = 1; //decreases
 
     private Stage stage;
     private Skin uiSkin;
@@ -108,7 +108,7 @@ public class GameScreen implements Screen {
             playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
             playerSprite.setRotation(player.getRotation());
 
-            if(count%level == 0) {
+            if(count%(200- level*40) == 0) {
                 int dir = (count % 3 == 0) ? 1 : -1;
                 int speed = 40 + (int) (Math.random() * 30);
                 Rabbit r = new Rabbit(dir, speed);
@@ -160,7 +160,7 @@ public class GameScreen implements Screen {
     }
 
     public void updateGameBar() {
-        energyLbl.setText("Energy level: " + player.energy / 1000);
+        energyLbl.setText("Energy level: " + player.energy / 1000 + "      level: " + level);
         numOfRabbitsLbl.setText("Rabbit count: " + rabbits.size());
         stage.draw();
     }
@@ -231,8 +231,9 @@ public class GameScreen implements Screen {
                 if (w.pos.dst(player.getPos()) < 20){
                     slurp.play();
                     player.energy += 1000;
-                    if (player.wormCounter++ > 10) {
+                    if (player.wormCounter++ > 5) {
                         rabbits.clear();
+                        level++;
                         player.wormCounter = 0;
                     }
                     map.wormList.remove(w);
