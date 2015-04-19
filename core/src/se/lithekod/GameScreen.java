@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
     Animation worm;
     public static final float WORM_SPEED = 0.07f;
     Sound slurp;
+    InputHandler inputHandler;
 
     private Stage stage;
     private Skin uiSkin;
@@ -43,11 +44,9 @@ public class GameScreen implements Screen {
     private Label energyLbl;
     private Label numOfRabbitsLbl;
 
-    @Override
-    public void show() {
-        InputHandler inputHandler = new InputHandler();
-        Gdx.input.setInputProcessor(inputHandler);
+    public GameScreen() {
 
+        InputHandler inputHandler = new InputHandler();
         rabbits = new ArrayList<Rabbit>();
         batch = new SpriteBatch();
         playerImg = new Texture(Gdx.files.internal("mole_original.png"));
@@ -71,7 +70,16 @@ public class GameScreen implements Screen {
         for (int x = 0; x < Main.DESKTOP_WIDTH; x += grassMap.getWidth()) {
             pixmap.drawPixmap(grassMap, x, 0);
         }
+        ground = new Texture(pixmap);
+        this.inputHandler = new InputHandler();
         initGameBar();
+    }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(inputHandler);
+
+
     }
 
     @Override
@@ -79,6 +87,7 @@ public class GameScreen implements Screen {
 
         if(rabbits.size() < 40) {
 
+            ground.dispose();
             player.update();
 
             updateRabbits();
@@ -172,7 +181,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
     }
 
     @Override
@@ -216,7 +224,10 @@ public class GameScreen implements Screen {
             else {
                 if (w.pos.dst(player.getPos()) < 20){
                     slurp.play();
-                    player.energy += 1000;
+                    player.energy += 100;
+                    if (player.wormCounter++ > 20) {
+                        player.wormCounter = 0;
+                    }
                     map.wormList.remove(w);
                 }
                 else {

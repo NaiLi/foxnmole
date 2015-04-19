@@ -24,7 +24,8 @@ public class Player {
     private boolean digging = false;
     public int digCounter = 50;
     public float digTimer = 0f;
-    public int energy = 100000;
+    public int energy = 50000;
+    public static int wormCounter = 0;
 
     public Player() {
 

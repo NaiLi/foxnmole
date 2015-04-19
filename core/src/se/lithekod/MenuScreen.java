@@ -54,6 +54,7 @@ public class MenuScreen implements Screen {
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if (runningGame != null) runningGame.dispose();
                 Gdx.app.exit();
             }
         });
