@@ -24,6 +24,9 @@ public class Rabbit {
 
     public boolean update() {
 
+        float oldX = pos.x;
+        float oldY = pos.y;
+
         double time = Gdx.graphics.getDeltaTime();
         int acceptance = (int) pos.y/100;
 
@@ -56,6 +59,9 @@ public class Rabbit {
             return false;
         }
 
+        if(!onGround) {
+            GameScreen.map.removeRabbit(oldX, oldY);
+        }
         GameScreen.map.setRabbit(pos.x, pos.y);
 
         return true;
