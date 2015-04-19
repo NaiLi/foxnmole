@@ -36,6 +36,7 @@ public class GameScreen implements Screen {
     public static final float WORM_SPEED = 0.07f;
     Sound slurp;
     InputHandler inputHandler;
+    public static int level = 200; //decreases
 
     private Stage stage;
     private Skin uiSkin;
@@ -107,7 +108,7 @@ public class GameScreen implements Screen {
             playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
             playerSprite.setRotation(player.getRotation());
 
-            if(count%120 == 0) {
+            if(count%level == 0) {
                 int dir = (count % 3 == 0) ? 1 : -1;
                 int speed = 40 + (int) (Math.random() * 30);
                 Rabbit r = new Rabbit(dir, speed);
