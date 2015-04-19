@@ -108,12 +108,12 @@ public class GameScreen implements Screen {
 		batch.draw(ground, 0, 0);
         playerSprite.draw(batch);
 
-		for(int i = 0; i < rabbits.size(); i++) {
-            String imgUrl = (rabbits.get(i).getDirection() == 1) ? "1" : "2";
+        for (Rabbit rabbit : rabbits) {
+            String imgUrl = (rabbit.getDirection() == 1) ? "1" : "2";
             imgUrl = "rabbit_sheet_single-" + imgUrl + ".png";
             rabbitImg = new Texture(imgUrl);
-			batch.draw(rabbitImg, rabbits.get(i).getPos().x, rabbits.get(i).getPos().y);
-		}
+            batch.draw(rabbitImg, rabbit.getPos().x, rabbit.getPos().y);
+        }
 		updateWorms();
 		batch.end();
 

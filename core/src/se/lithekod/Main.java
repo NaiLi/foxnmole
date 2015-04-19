@@ -11,7 +11,7 @@ public class Main extends Game {
 		DESKTOP_HEIGHT = Gdx.graphics.getHeight();
 		DESKTOP_WIDTH = Gdx.graphics.getWidth();
 
-		setScreen(new GameScreen());
+		setScreen(new MenuScreen());
 
 	}
 }
