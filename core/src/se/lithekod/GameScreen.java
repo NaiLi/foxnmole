@@ -81,7 +81,7 @@ public class GameScreen implements Screen {
 		playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
 		playerSprite.setRotation(player.getRotation());
 
-        if(count%1 == 0) {
+        if(count%120 == 0) {
             int dir = (count % 3 == 0) ? 1 : -1;
             int speed = 40 + (int) (Math.random() * 30);
             Rabbit r = new Rabbit(dir, speed);
@@ -108,6 +108,7 @@ public class GameScreen implements Screen {
 		updateWorms();
 		batch.end();
 
+        ground.dispose();
 		count++;
     }
 

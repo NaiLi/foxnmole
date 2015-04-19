@@ -29,7 +29,7 @@ public class Map {
 
     public static boolean setCleared(float x, float y) {
 
-        int digRadius = GameScreen.player.isDigging() ? 5 : 2;
+        int digRadius = GameScreen.player.isDigging() ? 8 : 3;
         int startX = (x-digRadius < 0) ? 0 : (int) x-digRadius;
         int endX = (x+digRadius*2 > Main.DESKTOP_WIDTH) ? Main.DESKTOP_WIDTH : (int) x+digRadius*2;
         int startY = (y-digRadius < 0) ? 0 : (int) y-digRadius;
