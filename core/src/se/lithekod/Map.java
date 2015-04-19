@@ -1,5 +1,6 @@
 package se.lithekod;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
@@ -26,20 +27,37 @@ public class Map {
         }
     }
 
-    public void setCleared(float x, float y) {
+    public static boolean setCleared(float x, float y) {
 
-        int digRadius = 5;
+        int digRadius = GameScreen.player.isDigging() ? 5 : 2;
         int startX = (x-digRadius < 0) ? 0 : (int) x-digRadius;
         int endX = (x+digRadius*2 > Main.DESKTOP_WIDTH) ? Main.DESKTOP_WIDTH : (int) x+digRadius*2;
         int startY = (y-digRadius < 0) ? 0 : (int) y-digRadius;
         int endY = (y+digRadius*2 > Main.DESKTOP_HEIGHT-SKY_HEIGHT) ? Main.DESKTOP_HEIGHT-SKY_HEIGHT : (int) y+digRadius*2;
         for(int i = startX; i < endX; i++) {
             for (int j = startY ; j < endY; j++) {
+                if (dirtMap[i][j] == Ground.DIRT) {
+                    if (GameScreen.player.isDigging()) {
+                        if (GameScreen.player.energy > 0) {
+                            GameScreen.player.energy--;
+                            dirtMap[i][j] = Ground.CLEARED;
+                        } else
+                            return false;
+                    } else {
+                        if (GameScreen.player.digCounter > 0) {
+                            GameScreen.player.digCounter--;
+                            dirtMap[i][j] = Ground.CLEARED;
+
+                        }
+                        else return false;
+                    }
+                }
                 dirtMap[i][j] = Ground.CLEARED;
                 GameScreen.pixmap.setColor(new Color(GameScreen.diggedMap.getPixel(i/4 % 64, j/2 % 64)));
                 GameScreen.pixmap.drawPixel(i, Main.DESKTOP_HEIGHT - Map.SKY_HEIGHT - j);
             }
         }
+        return true;
     }
 
     public void setRabbit(float x, float y) {
