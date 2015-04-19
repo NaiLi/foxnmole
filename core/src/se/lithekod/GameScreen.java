@@ -1,9 +1,6 @@
 package se.lithekod;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -85,7 +82,7 @@ public class GameScreen implements Screen {
 		playerSprite.setPosition(badgerPositionX - playerSprite.getWidth() / 2, badgerPositionY - playerSprite.getHeight() / 2);
 		playerSprite.setRotation(player.getRotation());
 
-        if(count%100 == 0) {
+        if(count%1 == 0) {
             int dir = (count % 3 == 0) ? 1 : -1;
             int speed = 40 + (int) (Math.random() * 30);
             Rabbit r = new Rabbit(dir, speed);
@@ -118,7 +115,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
