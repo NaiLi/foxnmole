@@ -12,14 +12,16 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-/**
- * Created by henning on 15-04-18.
- */
 public class GameScreen implements Screen {
     SpriteBatch batch;
     Texture playerImg;
@@ -33,6 +35,13 @@ public class GameScreen implements Screen {
     private int count = 0;
     Animation worm;
     public static final float WORM_SPEED = 0.07f;
+
+    private Stage stage;
+    private Skin uiSkin;
+    private Table gameBar;
+    private Label title;
+    private Label energyLbl;
+    private Label numOfRabbitsLbl;
 
     @Override
     public void show() {
@@ -61,6 +70,7 @@ public class GameScreen implements Screen {
         for (int x = 0; x < Main.DESKTOP_WIDTH; x += grassMap.getWidth()) {
             pixmap.drawPixmap(grassMap, x, 0);
         }
+        initGameBar();
     }
 
     @Override
@@ -108,10 +118,31 @@ public class GameScreen implements Screen {
             rabbitImg = new Texture(imgUrl);
 			batch.draw(rabbitImg, rabbits.get(i).getPos().x, rabbits.get(i).getPos().y);
 		}
-		updateWorms();
-		batch.end();
+        updateWorms();
+        batch.end();
+        updateGameBar();
+
 
 		count++;
+    }
+
+    private void initGameBar() {
+        stage = new Stage();
+        uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
+        energyLbl = new Label("Energy level: 0", uiSkin);
+        numOfRabbitsLbl = new Label("Rabbit count: 0", uiSkin);
+        gameBar = new Table();
+        gameBar.add(energyLbl).padTop(0).row();
+        gameBar.add(numOfRabbitsLbl).padBottom(0).row();
+        gameBar.setFillParent(true);
+        gameBar.align(Align.topLeft);
+        stage.addActor(gameBar);
+    }
+
+    public void updateGameBar() {
+        energyLbl.setText("Energy level: " + player.energy / 1000);
+        numOfRabbitsLbl.setText("Rabbit count: " + rabbits.size());
+        stage.draw();
     }
 
     @Override
@@ -174,10 +205,10 @@ public class GameScreen implements Screen {
                 }
                 else {
                     TextureRegion wormFrame = worm.getKeyFrame(w.stateTime, true);
-                    batch.draw(wormFrame, w.pos.x - wormFrame.getRegionWidth()/2,
-                            w.pos.y - wormFrame.getRegionWidth()/2,
-                            wormFrame.getRegionWidth()/2,
-                            wormFrame.getRegionHeight()/2,
+                    batch.draw(wormFrame, w.pos.x - wormFrame.getRegionWidth() / 2,
+                            w.pos.y - wormFrame.getRegionWidth() / 2,
+                            wormFrame.getRegionWidth() / 2,
+                            wormFrame.getRegionHeight() / 2,
                             wormFrame.getRegionWidth(),
                             wormFrame.getRegionHeight(),
                             .25f, .25f,
